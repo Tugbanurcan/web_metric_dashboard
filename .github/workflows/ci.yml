@@ -26,9 +26,15 @@ jobs:
     - name: Playwright Tarayıcılarını İndir
       run: npx playwright install --with-deps
 
+    # --- KRİTİK DÜZELTME BURADA ---
+    # Önce Unit testleri yapar.
+    # Sonra siteyi 'dev' modunda arka planda başlatır (& işareti).
+    # 'wait-on' ile 3000 portunun açılmasını bekler.
+    # Site açılınca E2E testleri (playwright) başlatır.
     - name: Testleri Çalıştır (Unit & E2E)
       run: |
         npm run test
+        npm run dev & npx wait-on http://localhost:3000
         npx playwright test
 
     - name: Build Denemesi Yap (Build Check)
