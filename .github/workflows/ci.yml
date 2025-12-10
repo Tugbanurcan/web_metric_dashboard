@@ -1,0 +1,35 @@
+name: Dashboard CI (Test & Build)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Kodu Çek (Checkout)
+      uses: actions/checkout@v4
+
+    - name: Node.js Kur (Setup Node)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Bağımlılıkları Yükle (Install)
+      run: npm ci
+
+    - name: Playwright Tarayıcılarını İndir
+      run: npx playwright install --with-deps
+
+    - name: Testleri Çalıştır (Unit & E2E)
+      run: |
+        npm run test
+        npx playwright test
+
+    - name: Build Denemesi Yap (Build Check)
+      run: npm run build
