@@ -18,7 +18,7 @@ export default defineConfig({
     command: 'npm run dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000, // 120 saniye bekle (Build uzun sürebilir)
+    timeout: 180 * 1000, // 3 dakika yapalım (120 yetmedi)
   },
 
   use: {
