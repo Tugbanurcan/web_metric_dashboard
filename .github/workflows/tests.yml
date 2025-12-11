@@ -1,0 +1,9 @@
+- name: Start Next.js server
+  run: |
+    npm run build
+    npm start &
+  env:
+    PORT: 3000
+
+- name: Wait for server
+  run: npx wait-on http://localhost:3000
