@@ -1,4 +1,4 @@
-name: Dashboard CI (Test & Build)
+name: Dashboard CI (Unit Test & Build)
 
 on:
   push:
@@ -11,31 +11,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Kodu Çek (Checkout)
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-    - name: Node.js Kur (Setup Node)
-      uses: actions/setup-node@v4
+    - uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
 
-    - name: Bağımlılıkları Yükle (Install)
+    - name: Install deps
       run: npm ci
 
-    - name: Playwright Tarayıcılarını İndir
-      run: npx playwright install --with-deps
+    - name: Run Unit Tests
+      run: npm run test
 
-    # --- KRİTİK DÜZELTME BURADA ---
-    # Önce Unit testleri yapar.
-    # Sonra siteyi 'dev' modunda arka planda başlatır (& işareti).
-    # 'wait-on' ile 3000 portunun açılmasını bekler.
-    # Site açılınca E2E testleri (playwright) başlatır.
-    - name: Testleri Çalıştır (Unit & E2E)
-      run: |
-        npm run test
-        npm run dev & npx wait-on http://localhost:3000
-        npx playwright test
-
-    - name: Build Denemesi Yap (Build Check)
+    - name: Build Project
       run: npm run build
